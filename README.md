@@ -1,0 +1,1 @@
+# Auto-ELT-Metadata-Guard
