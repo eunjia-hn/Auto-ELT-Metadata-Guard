@@ -1,0 +1,33 @@
+version: 2
+
+sources:
+  - name: sales
+    database: RAW
+    schema: SALES
+    tables:
+      - name: orders
+        description: "주문 원본 테이블"
+        tests:
+          - no_blocked_source     # META_GUARD 격리 플래그 점검 (안전망)
+        columns:
+          - name: order_id
+            description: "주문 고유 ID"
+          - name: customer_id
+            description: "고객 ID"
+          - name: order_amount
+            description: "주문 금액"
+          # ↓ 신규 컬럼이 감지되면 Auto Guard가 아래와 같은 항목을 자동으로 추가합니다.
+          # - name: promo_code
+          #   description: "[Auto-Guard] 2026-06-26 스키마 드리프트 감지 후 자동 추가됨. 컬럼 설명/타입 검토 필요."
+
+      - name: customers
+        description: "고객 원본 테이블 (PII 포함)"
+        tests:
+          - no_blocked_source
+        columns:
+          - name: customer_id
+            description: "고객 ID"
+          - name: email
+            description: "고객 이메일 (PII - 노출 스키마 적재 시 마스킹 정책 필수)"
+          - name: phone_number
+            description: "고객 연락처 (PII - 노출 스키마 적재 시 마스킹 정책 필수)"
